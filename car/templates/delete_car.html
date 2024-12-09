@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Delete Car{% endblock title %}
+
+{% block content %}
+<h1 class="text-center mb-3">Delete Car</h1>
+
+<!-- Form for adding a new car -->
+<form action="" method="post" class="w-50 mx-auto">
+    <h1>Are you sure that you want to delete</h1>
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-primary mt-3">Delete</button>
+</form>
+
+{% endblock content %}

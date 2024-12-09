@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Brand{% endblock title %}
+
+{% block content %}
+<h1 class="text-center mb-4">Add Brand</h1>
+
+<form action="" method="post" class="w-50 mx-auto">
+    {% csrf_token %}
+    {{form | crispy}}
+
+    <button class="btn btn-primary mt-3">Submit</button>
+</form>
+
+<div class="w-50 mx-auto mt-5">
+    <h4 class="my-5">Available Brand</h4>
+    <div>
+        {% for brand in brands %}
+        <p>{{ forloop.counter }}. {{ brand.name }}</p>
+        {% empty %}
+            <p>No brand available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

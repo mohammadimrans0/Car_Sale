@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+
+<!-- Banner -->
+<div class="mb-3">
+  <div class="row g-0">
+    <div class="col-md-6">
+      <div class="card-body">
+        <h1 class="card-title fw-bold mt-5 mb-4">Sale Car in minutes...</h1>
+        <h4 class="mb-4">Drive Your Dream: Find Your Perfect Car Today!</h4>
+        <p class="card-text">Whether you're looking for a reliable family car, a sleek luxury vehicle, or a budget-friendly first ride, our extensive inventory offers a wide range of options tailored to suit your lifestyle and budget. Start your journey today and drive home in your dream car!</p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <img src="{% static 'sale-car.avif' %}" class="img-fluid rounded-start" alt="...">
+    </div>
+  </div>
+</div>
+
+<!-- brands -->
+<div class="my-5",>
+  <h4 class="my-5 text-center">Filter Car</h4>
+  <div class="d-flex gap-5 align-items-ceneter justify-content-center">
+    {% for brand in brands %}
+    <a href="{% url 'brand_wise_car' brand.slug %}" class="text-decoration-none">
+      <div class="border rounded py-2 px-4">
+        {{brand}}
+      </div>
+    </a>  
+    {% endfor %}
+  </div>
+</div>
+
+<h1 class="mb-4">Total Car Found : {{ total_cars }}</h1>
+<!-- cars -->
+<div class="d-flex flex-wrap justify-content-between gap-5">
+  {% for car in cars %}
+  <div class="card" style="width: 30%; height: 350px;">
+    <a href="{% url 'car_details' car.pk %}" class="text-decoration-none">
+      <img src="{{ car.image.url }}" class="card-img-top" style="height: 200px;" alt="car-image">
+      <div class="card-body">
+        <h4 class="card-title text-dark">{{ car.name }}</h4>
+        <p class="card-text text-dark"><strong>Brand:</strong> {{ car.brand }}</p>
+        <p class="card-text text-dark"><strong>Price:</strong> ${{ car.price }}</p>
+      </div>
+    </a>
+  </div>  
+  
+  {% empty %}
+  <div class="text-center w-100">
+      <h4>No cars available.</h4>
+  </div>
+  {% endfor %}
+</div>
+
+
+{% endblock content %}

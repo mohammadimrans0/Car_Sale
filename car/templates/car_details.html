@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Car Details{% endblock title %}
+
+{% block content %}
+
+    <!-- Car Details Section -->
+    <div class="row ">
+        <!-- Image Section -->
+        <div class="col-md-7">
+            <img
+                src="{{ car.image.url }}"
+                class="rounded w-100"
+                style="height: 450px;"
+                alt="car-image"
+            />
+        </div>
+
+        <!-- Details Section -->
+        <div class="col-md-5">
+            <h1 class="card-title my-3 text-info">{{ car.name }}</h1>
+            <h4 class="mb-3">
+                <span class="fw-bold">Brand:</span>
+                <span>{{ car.brand.name }}</span>       
+            </h4>
+            <p>
+                <span class="fw-bold">Description:</span>
+                <span>{{ car.description }}</span>
+            </p>
+            <p>
+                <span class="fw-bold">Price:</span>
+                <span>${{ car.price }}</span>
+            </p>
+            <p class="mb-5">
+                <span class="fw-bold">Quantity:</span>
+                <span>{{ car.quantity }}</span>
+            </p>
+            <p>
+                {% if user.is_authenticated %}
+                    {% if car in user.purchased_cars.all %}
+                        <button class="btn btn-secondary" disabled>Purchased</button>
+                    {% elif car.quantity > 0 %}
+                        <a href="{% url 'buy_car' car.id %}" class="btn btn-primary">Buy Now</a>
+                    {% else %}
+                        <button class="btn btn-secondary" disabled>Out of Stock</button>
+                    {% endif %}
+                {% else %}
+                    <a href="{% url 'signin' %}" class="btn btn-primary">Login to Buy</a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+    <!-- Comment Form Section -->
+    <div class="my-5">
+        <h3 class="mb-3">Leave a Comment</h3>
+        <div class="d-flex gap-4 align-items-center">
+            <form method="post" class="w-75">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <button type="submit" class="btn btn-primary">Post Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Displaying Comments Section -->
+    <div>
+        <h3>Comments</h3>
+        {% for comment in car.comments.all %}
+        <div class="border p-3 mb-3">
+            <p><strong>{{ comment.name }}</strong> <span class="text-muted">({{ comment.created_on|date:"M d, Y H:i" }})</span></p>
+            <p>{{ comment.body }}</p>
+        </div>
+        {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

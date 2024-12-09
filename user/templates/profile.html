@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock title %}
+
+{% block content %}
+
+<div class="mt-4 d-flex gap-5 justify-content-end">
+    <p><a href="{% url "change_profile" %}"><button class="btn btn-info">Change Profile</button></a></p>
+    <p><a href="{% url "change_password" %}"><button class="btn btn-info">Change Password</button></a></p>
+</div>
+
+    <h1 class="text-center mb-5">welcome <span class="text-primary">{{user.first_name}} {{user.last_name}}</span></h1>
+
+    <h2 class="mb-4">Your Purchased Cars</h2>
+    <div class="d-flex flex-wrap justify-content-start gap-4">
+    {% for car in purchased_cars %}
+      <div class="card" style="width: 20rem;">
+          <img src="{{ car.image.url }}" class="card-img-top" alt="car-image">
+          <div class="card-body">
+              <h5 class="card-title">{{ car.name }}</h5>
+              <p class="card-text">Brand: {{ car.brand.name }}</p>
+              <p class="card-text">Price: ${{ car.price }}</p>
+          </div>
+      </div>
+    {% empty %}
+    <p>You haven't purchased any cars yet.</p>
+    {% endfor %}
+</div>
+
+{% endblock content %}
